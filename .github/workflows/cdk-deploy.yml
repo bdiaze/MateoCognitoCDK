@@ -32,7 +32,7 @@ jobs:
               uses: aws-actions/configure-aws-credentials@v4
               with:
                   aws-region: ${{ vars.REGION_AWS }}
-                  role-to-assume: $ {{ vars.ARN_GITHUB_ROLE }}
+                  role-to-assume: ${{ vars.ARN_GITHUB_ROLE }}
                   
             - name: CDK Synth
               run: cdk synth
