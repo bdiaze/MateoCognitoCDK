@@ -104,8 +104,11 @@ namespace Cdk
                 }
             });
 
-            domain.SignInUrl(userPoolClient, new SignInUrlOptions { 
-                RedirectUri = urlCallback
+            CfnManagedLoginBranding branding = new CfnManagedLoginBranding(this, $"{appName}ManagedLoginBranding", new CfnManagedLoginBrandingProps {
+                UserPoolId = userPool.UserPoolId,
+                ClientId = userPoolClient.UserPoolClientId,
+                ReturnMergedResources = true,
+                UseCognitoProvidedValues = true
             });
         }
     }
