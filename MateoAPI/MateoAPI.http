@@ -1,6 +1,0 @@
-@MateoAPI_HostAddress = http://localhost:5096
-
-GET {{MateoAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

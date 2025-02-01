@@ -20,7 +20,7 @@ namespace Cdk
                 UserVerification = new UserVerificationConfig {
                     EmailSubject = emailSubject,
                     EmailBody = emailBody,
-                    EmailStyle = VerificationEmailStyle.LINK,
+                    EmailStyle = VerificationEmailStyle.CODE,
                 },
                 SignInAliases = new SignInAliases {
                     Username = true,
