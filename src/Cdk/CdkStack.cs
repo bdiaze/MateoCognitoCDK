@@ -98,10 +98,12 @@ namespace Cdk
                 }
             });
 
-            UserPoolDomain domain = userPool.AddDomain($"{appName}UserPoolDomain", new UserPoolDomainOptions {
+            UserPoolDomain domain = new UserPoolDomain(this, $"{appName}UserPoolDomain", new UserPoolDomainProps { 
+                UserPool = userPool,
                 CognitoDomain = new CognitoDomainOptions {
-                    DomainPrefix = userPoolDomain
-                }
+                    DomainPrefix = userPoolDomain,
+                },
+                ManagedLoginVersion = ManagedLoginVersion.NEWER_MANAGED_LOGIN
             });
 
             CfnManagedLoginBranding branding = new CfnManagedLoginBranding(this, $"{appName}ManagedLoginBranding", new CfnManagedLoginBrandingProps {
