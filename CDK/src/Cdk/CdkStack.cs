@@ -8,13 +8,19 @@ namespace Cdk
     {
         internal CdkStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
         {
+            string error = System.Environment.GetEnvironmentVariable("variable_no_existe")!;
+            string appName = System.Environment.GetEnvironmentVariable("APP_NAME")!;
+            string emailSubject = System.Environment.GetEnvironmentVariable("VERIFICATION_SUBJECT")!;
+            string emailBody = System.Environment.GetEnvironmentVariable("VERIFICATION_BODY")!;
+            string urlCallback = System.Environment.GetEnvironmentVariable("URL_CALLBACK")!;
+            string urlLogout = System.Environment.GetEnvironmentVariable("URL_LOGOUT")!;
 
-            UserPool userPool = new UserPool(this, "MateoUserPool", new UserPoolProps {
-                UserPoolName = "MateoUserPool",
+            UserPool userPool = new UserPool(this, $"{appName}UserPool", new UserPoolProps {
+                UserPoolName = $"{appName}UserPool",
                 SelfSignUpEnabled = true,
                 UserVerification = new UserVerificationConfig {
-                    EmailSubject = "¡Verifica tu correo electrónico! - Mateo",
-                    EmailBody = "¡Hola {username}!, Para verificar tu correo electrónico solo debes hacer click {##¡Aquí!##}",
+                    EmailSubject = emailSubject,
+                    EmailBody = emailBody,
                     EmailStyle = VerificationEmailStyle.LINK,
                 },
                 SignInAliases = new SignInAliases {
@@ -43,7 +49,8 @@ namespace Cdk
                     },
                     Birthdate = new StandardAttribute {
                         Required = true,
-                        Mutable = true
+                        Mutable = true,
+                        
                     },
                     Gender = new StandardAttribute {
                         Required = true,
@@ -59,7 +66,7 @@ namespace Cdk
                 }
             });
 
-            UserPoolClient userPoolClient = new UserPoolClient(this, "MateoUserPoolClient", new UserPoolClientProps {
+            UserPoolClient userPoolClient = new UserPoolClient(this, $"{appName}UserPoolClient", new UserPoolClientProps {
                 UserPool = userPool,
                 GenerateSecret = false,
                 PreventUserExistenceErrors = true,
@@ -86,10 +93,10 @@ namespace Cdk
                         OAuthScope.COGNITO_ADMIN
                     },
                     CallbackUrls = new string[] {
-                        "http://localhost/signin-oidc"
+                        urlCallback
                     },
                     LogoutUrls = new string[] {
-                        "http://localhost/logout-oidc"
+                        urlLogout
                     }
                 }
             });

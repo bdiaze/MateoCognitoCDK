@@ -11,6 +11,13 @@ jobs:
         permissions:
             contents: read
             id-token: write
+        defaults:
+            working-directory: ${{ vars.DIRECTORIO_CDK }}
+        env:
+            URL_CALLBACK: ${{ vars.URL_CALLBACK }}
+            URL_LOGOUT: ${{ vars.URL_LOGOUT }}
+            VERIFICATION_BODY: ${{ vars.VERIFICATION_BODY }}
+            VERIFICATION_SUBJECT: ${{ vars.VERIFICATION_SUBJECT }}
         steps:
             - name: Checkout Repositorio
               uses: actions/checkout@v4
@@ -35,10 +42,8 @@ jobs:
                   role-to-assume: ${{ vars.ARN_GITHUB_ROLE }}
                   
             - name: CDK Synth
-              working-directory: ${{ vars.DIRECTORIO_CDK }}
               run: cdk synth
               
             - name: CDK Deploy
-              working-directory: ${{ vars.DIRECTORIO_CDK }}
               run: cdk deploy --require-approval never
           
