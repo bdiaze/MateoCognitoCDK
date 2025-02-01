@@ -44,16 +44,16 @@ namespace Cdk
                         Mutable = true
                     },
                     Nickname = new StandardAttribute {
-                        Required = true,
+                        Required = false,
                         Mutable = true
                     },
                     Birthdate = new StandardAttribute {
-                        Required = true,
+                        Required = false,
                         Mutable = true,
                         
                     },
                     Gender = new StandardAttribute {
-                        Required = true,
+                        Required = false,
                         Mutable = true
                     },
                 },
@@ -71,10 +71,7 @@ namespace Cdk
                 GenerateSecret = false,
                 PreventUserExistenceErrors = true,
                 ReadAttributes = new ClientAttributes().WithStandardAttributes(new StandardAttributesMask { 
-                    Email = true,
-                    Nickname = true,
-                    Birthdate = true,
-                    Gender = true
+                    Email = true
                 }),
                 SupportedIdentityProviders = new UserPoolClientIdentityProvider[] {
                     UserPoolClientIdentityProvider.COGNITO
