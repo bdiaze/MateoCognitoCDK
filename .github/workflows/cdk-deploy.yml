@@ -12,6 +12,7 @@ jobs:
             contents: read
             id-token: write
         defaults:
+            shell: bash
             working-directory: ${{ vars.DIRECTORIO_CDK }}
         env:
             URL_CALLBACK: ${{ vars.URL_CALLBACK }}
