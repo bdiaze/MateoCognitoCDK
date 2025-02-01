@@ -8,7 +8,6 @@ namespace Cdk
     {
         internal CdkStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
         {
-            string error = System.Environment.GetEnvironmentVariable("variable_no_existe")!;
             string appName = System.Environment.GetEnvironmentVariable("APP_NAME")!;
             string emailSubject = System.Environment.GetEnvironmentVariable("VERIFICATION_SUBJECT")!;
             string emailBody = System.Environment.GetEnvironmentVariable("VERIFICATION_BODY")!;

@@ -9,8 +9,10 @@ namespace Cdk
     {
         public static void Main(string[] args)
         {
+            string appName = System.Environment.GetEnvironmentVariable("APP_NAME")!;
+
             var app = new App();
-            new CdkStack(app, "CdkMateoAPI", new StackProps
+            new CdkStack(app, $"Cdk{appName}", new StackProps
             {
                 // If you don't specify 'env', this stack will be environment-agnostic.
                 // Account/Region-dependent features and context lookups will not work,
