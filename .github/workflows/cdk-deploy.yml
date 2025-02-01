@@ -16,6 +16,7 @@ jobs:
                 working-directory: ${{ vars.DIRECTORIO_CDK }}
         env:
             APP_NAME: ${{ vars.APP_NAME }}
+            USER_POOL_DOMAIN: ${{ vars.USER_POOL_DOMAIN }}
             URL_CALLBACK: ${{ vars.URL_CALLBACK }}
             URL_LOGOUT: ${{ vars.URL_LOGOUT }}
             VERIFICATION_BODY: ${{ vars.VERIFICATION_BODY }}

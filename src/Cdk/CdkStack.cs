@@ -11,6 +11,7 @@ namespace Cdk
             string appName = System.Environment.GetEnvironmentVariable("APP_NAME")!;
             string emailSubject = System.Environment.GetEnvironmentVariable("VERIFICATION_SUBJECT")!;
             string emailBody = System.Environment.GetEnvironmentVariable("VERIFICATION_BODY")!;
+            string userPoolDomain = System.Environment.GetEnvironmentVariable("USER_POOL_DOMAIN")!;
             string urlCallback = System.Environment.GetEnvironmentVariable("URL_CALLBACK")!;
             string urlLogout = System.Environment.GetEnvironmentVariable("URL_LOGOUT")!;
 
@@ -98,6 +99,16 @@ namespace Cdk
                         urlLogout
                     }
                 }
+            });
+
+            UserPoolDomain domain = userPool.AddDomain($"{appName}UserPoolDomain", new UserPoolDomainOptions {
+                CognitoDomain = new CognitoDomainOptions {
+                    DomainPrefix = userPoolDomain
+                }
+            });
+
+            domain.SignInUrl(userPoolClient, new SignInUrlOptions { 
+                RedirectUri = urlCallback
             });
         }
     }
