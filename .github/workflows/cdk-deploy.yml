@@ -15,6 +15,7 @@ jobs:
             run: 
                 working-directory: ${{ vars.DIRECTORIO_CDK }}
         env:
+            APP_NAME: ${{ vars.APP_NAME }}
             URL_CALLBACK: ${{ vars.URL_CALLBACK }}
             URL_LOGOUT: ${{ vars.URL_LOGOUT }}
             VERIFICATION_BODY: ${{ vars.VERIFICATION_BODY }}
