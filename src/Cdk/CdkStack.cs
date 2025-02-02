@@ -77,7 +77,8 @@ namespace Cdk
                     UserPoolClientIdentityProvider.COGNITO
                 },
                 AuthFlows = new AuthFlow {
-                    UserPassword = true
+                    UserPassword = true,
+                    UserSrp = true
                 },
                 OAuth = new OAuthSettings { 
                     Flows = new OAuthFlows {
