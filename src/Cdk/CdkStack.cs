@@ -98,8 +98,6 @@ namespace Cdk
                 },
                 OAuth = new OAuthSettings {
                     Flows = new OAuthFlows {
-                        AuthorizationCodeGrant = true,
-                        ImplicitCodeGrant = true,
                         ClientCredentials = true,
                     },
                     Scopes = new[] {
