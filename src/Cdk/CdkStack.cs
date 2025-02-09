@@ -64,12 +64,17 @@ namespace Cdk
             });
 
             // Create client for login/logout page, any other permissions required should be added in another client...
-            UserPoolClient userPoolClient = new UserPoolClient(this, $"{appName}UserPoolClient", new UserPoolClientProps {
+            UserPoolClient userPoolClient = new UserPoolClient(this, $"{appName}FrontendUserPoolClient", new UserPoolClientProps {
+                UserPoolClientName = $"{appName}FrontendUserPoolClient",
                 UserPool = userPool,
                 GenerateSecret = false,
                 PreventUserExistenceErrors = true,
-                ReadAttributes = null,
-                WriteAttributes = null,
+                ReadAttributes = new ClientAttributes().WithStandardAttributes(new StandardAttributesMask { 
+                    Email = false,
+                }),
+                WriteAttributes = new ClientAttributes().WithStandardAttributes(new StandardAttributesMask {
+                    Email = false,
+                }),
                 AuthFlows = new AuthFlow {
                     UserSrp = true,
                 },
