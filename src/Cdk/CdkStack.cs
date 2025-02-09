@@ -70,10 +70,10 @@ namespace Cdk
                 GenerateSecret = false,
                 PreventUserExistenceErrors = true,
                 ReadAttributes = new ClientAttributes().WithStandardAttributes(new StandardAttributesMask { 
-                    Email = false,
+                    Email = true,
                 }),
                 WriteAttributes = new ClientAttributes().WithStandardAttributes(new StandardAttributesMask {
-                    Email = false,
+                    Email = true,
                 }),
                 AuthFlows = new AuthFlow {
                     UserSrp = true,
