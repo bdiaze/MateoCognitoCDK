@@ -66,52 +66,19 @@ namespace Cdk
                 }
             });
 
+            // Create client for login/logout page, any other permissions required should be added in another client...
             UserPoolClient userPoolClient = new UserPoolClient(this, $"{appName}UserPoolClient", new UserPoolClientProps {
                 UserPool = userPool,
                 GenerateSecret = false,
                 PreventUserExistenceErrors = true,
-                ReadAttributes = new ClientAttributes().WithStandardAttributes(new StandardAttributesMask { 
+                ReadAttributes = new ClientAttributes().WithStandardAttributes(new StandardAttributesMask { }),
+                WriteAttributes = new ClientAttributes().WithStandardAttributes(new StandardAttributesMask { 
                     Email = true
                 }),
-                SupportedIdentityProviders = new UserPoolClientIdentityProvider[] {
-                    UserPoolClientIdentityProvider.COGNITO
-                },
                 AuthFlows = new AuthFlow {
-                    UserPassword = true,
-                    UserSrp = true
+                    UserSrp = true,
                 },
-                OAuth = new OAuthSettings { 
-                    Flows = new OAuthFlows {
-                        AuthorizationCodeGrant = true
-                    },
-                    Scopes = new OAuthScope[] {
-                        OAuthScope.EMAIL,
-                        OAuthScope.OPENID,
-                        OAuthScope.PROFILE,
-                        OAuthScope.COGNITO_ADMIN
-                    },
-                    CallbackUrls = new string[] {
-                        urlCallback
-                    },
-                    LogoutUrls = new string[] {
-                        urlLogout
-                    }
-                }
-            });
-
-            UserPoolDomain domain = new UserPoolDomain(this, $"{appName}UserPoolDomain", new UserPoolDomainProps { 
-                UserPool = userPool,
-                CognitoDomain = new CognitoDomainOptions {
-                    DomainPrefix = userPoolDomain,
-                },
-                ManagedLoginVersion = ManagedLoginVersion.NEWER_MANAGED_LOGIN
-            });
-
-            CfnManagedLoginBranding branding = new CfnManagedLoginBranding(this, $"{appName}ManagedLoginBranding", new CfnManagedLoginBrandingProps {
-                UserPoolId = userPool.UserPoolId,
-                ClientId = userPoolClient.UserPoolClientId,
-                ReturnMergedResources = true,
-                UseCognitoProvidedValues = true
+                DisableOAuth = true,
             });
         }
     }
