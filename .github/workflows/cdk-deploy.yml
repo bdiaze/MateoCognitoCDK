@@ -16,9 +16,6 @@ jobs:
                 working-directory: ${{ vars.DIRECTORIO_CDK }}
         env:
             APP_NAME: ${{ vars.APP_NAME }}
-            USER_POOL_DOMAIN: ${{ vars.USER_POOL_DOMAIN }}
-            URL_CALLBACK: ${{ vars.URL_CALLBACK }}
-            URL_LOGOUT: ${{ vars.URL_LOGOUT }}
             VERIFICATION_BODY: ${{ vars.VERIFICATION_BODY }}
             VERIFICATION_SUBJECT: ${{ vars.VERIFICATION_SUBJECT }}
         steps:
@@ -39,7 +36,7 @@ jobs:
               run: npm install -g aws-cdk
       
             - name: Configure AWS Credentials
-              uses: aws-actions/configure-aws-credentials@v4
+              uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4
               with:
                   aws-region: ${{ vars.REGION_AWS }}
                   role-to-assume: ${{ vars.ARN_GITHUB_ROLE }}

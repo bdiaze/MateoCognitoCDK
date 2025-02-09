@@ -11,9 +11,6 @@ namespace Cdk
             string appName = System.Environment.GetEnvironmentVariable("APP_NAME")!;
             string emailSubject = System.Environment.GetEnvironmentVariable("VERIFICATION_SUBJECT")!;
             string emailBody = System.Environment.GetEnvironmentVariable("VERIFICATION_BODY")!;
-            string userPoolDomain = System.Environment.GetEnvironmentVariable("USER_POOL_DOMAIN")!;
-            string urlCallback = System.Environment.GetEnvironmentVariable("URL_CALLBACK")!;
-            string urlLogout = System.Environment.GetEnvironmentVariable("URL_LOGOUT")!;
 
             UserPool userPool = new UserPool(this, $"{appName}UserPool", new UserPoolProps {
                 UserPoolName = $"{appName}UserPool",
@@ -71,10 +68,8 @@ namespace Cdk
                 UserPool = userPool,
                 GenerateSecret = false,
                 PreventUserExistenceErrors = true,
-                ReadAttributes = new ClientAttributes().WithStandardAttributes(new StandardAttributesMask { }),
-                WriteAttributes = new ClientAttributes().WithStandardAttributes(new StandardAttributesMask { 
-                    Email = true
-                }),
+                ReadAttributes = null,
+                WriteAttributes = null,
                 AuthFlows = new AuthFlow {
                     UserSrp = true,
                 },
