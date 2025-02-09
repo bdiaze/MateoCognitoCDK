@@ -18,6 +18,9 @@ jobs:
             APP_NAME: ${{ vars.APP_NAME }}
             VERIFICATION_BODY: ${{ vars.VERIFICATION_BODY }}
             VERIFICATION_SUBJECT: ${{ vars.VERIFICATION_SUBJECT }}
+            DOMAIN_NAME: ${{ vars.DOMAIN_NAME }}
+            SUBDOMAIN_NAME: ${{ vars.SUBDOMAIN_NAME }}
+            CERTIFICATE_ARN: ${{ vars.CERTIFICATE_ARN }}
         steps:
             - name: Checkout Repositorio
               uses: actions/checkout@v4

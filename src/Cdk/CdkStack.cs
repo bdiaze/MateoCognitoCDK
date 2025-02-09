@@ -1,5 +1,8 @@
 using Amazon.CDK;
+using Amazon.CDK.AWS.CertificateManager;
 using Amazon.CDK.AWS.Cognito;
+using Amazon.CDK.AWS.Route53;
+using Amazon.CDK.AWS.Route53.Targets;
 using Constructs;
 
 namespace Cdk
@@ -11,6 +14,10 @@ namespace Cdk
             string appName = System.Environment.GetEnvironmentVariable("APP_NAME")!;
             string emailSubject = System.Environment.GetEnvironmentVariable("VERIFICATION_SUBJECT")!;
             string emailBody = System.Environment.GetEnvironmentVariable("VERIFICATION_BODY")!;
+            string domainName = System.Environment.GetEnvironmentVariable("DOMAIN_NAME")!;
+            string subdomainName = System.Environment.GetEnvironmentVariable("SUBDOMAIN_NAME")!;
+            string certificateArn = System.Environment.GetEnvironmentVariable("CERTIFICATE_ARN")!;
+
 
             UserPool userPool = new UserPool(this, $"{appName}UserPool", new UserPoolProps {
                 UserPoolName = $"{appName}UserPool",
@@ -79,6 +86,49 @@ namespace Cdk
                     UserSrp = true,
                 },
                 DisableOAuth = true,
+            });
+
+            // Create client for api/backend applications...
+            UserPoolClient apiUserPoolClient = new UserPoolClient(this, $"{appName}ApiUserPoolClient", new UserPoolClientProps {
+                UserPoolClientName = $"{appName}ApiUserPoolClient",
+                UserPool = userPool,
+                GenerateSecret = true,
+                AuthFlows = new AuthFlow {
+                    UserSrp = true,
+                },
+                OAuth = new OAuthSettings {
+                    Flows = new OAuthFlows {
+                        AuthorizationCodeGrant = true,
+                        ImplicitCodeGrant = true,
+                        ClientCredentials = true,
+                    },
+                    Scopes = new[] {
+                        OAuthScope.EMAIL,
+                        OAuthScope.PHONE,
+                        OAuthScope.OPENID,
+                        OAuthScope.PROFILE,
+                        OAuthScope.COGNITO_ADMIN,
+                    },
+                },
+            });
+
+            ICertificate certificate = Certificate.FromCertificateArn(this, $"{appName}Certificate", certificateArn);
+            IHostedZone hostedZone = HostedZone.FromLookup(this, $"{appName}HostedZone", new HostedZoneProviderProps {
+                DomainName = domainName
+            });
+
+            UserPoolDomain domain = new UserPoolDomain(this, $"{appName}UserPoolDomain", new UserPoolDomainProps {
+                UserPool = userPool,
+                CustomDomain = new CustomDomainOptions {
+                    DomainName = subdomainName,
+                    Certificate = certificate,
+                },
+            });
+
+            ARecord record = new ARecord(this, $"{appName}ARecord", new ARecordProps {
+                Zone = hostedZone,
+                RecordName = subdomainName,
+                Target = RecordTarget.FromAlias(new UserPoolDomainTarget(domain)),
             });
         }
     }
