@@ -98,7 +98,8 @@ namespace Cdk
                 },
                 OAuth = new OAuthSettings {
                     Flows = new OAuthFlows {
-                        ClientCredentials = true,
+                        AuthorizationCodeGrant = true,
+                        ImplicitCodeGrant = true,
                     },
                     Scopes = new[] {
                         OAuthScope.EMAIL,
