@@ -76,58 +76,10 @@ namespace Cdk
                 UserPool = userPool,
                 GenerateSecret = false,
                 PreventUserExistenceErrors = true,
-                ReadAttributes = new ClientAttributes().WithStandardAttributes(new StandardAttributesMask { 
-                    Email = true,
-                }),
-                WriteAttributes = new ClientAttributes().WithStandardAttributes(new StandardAttributesMask {
-                    Email = true,
-                }),
                 AuthFlows = new AuthFlow {
                     UserSrp = true,
                 },
                 DisableOAuth = true,
-            });
-
-            // Create client for api/backend applications...
-            UserPoolClient apiUserPoolClient = new UserPoolClient(this, $"{appName}ApiUserPoolClient", new UserPoolClientProps {
-                UserPoolClientName = $"{appName}ApiUserPoolClient",
-                UserPool = userPool,
-                GenerateSecret = true,
-                AuthFlows = new AuthFlow {
-                    UserSrp = true,
-                },
-                OAuth = new OAuthSettings {
-                    Flows = new OAuthFlows {
-                        AuthorizationCodeGrant = true,
-                        ImplicitCodeGrant = true,
-                    },
-                    Scopes = new[] {
-                        OAuthScope.EMAIL,
-                        OAuthScope.PHONE,
-                        OAuthScope.OPENID,
-                        OAuthScope.PROFILE,
-                        OAuthScope.COGNITO_ADMIN,
-                    },
-                },
-            });
-
-            ICertificate certificate = Certificate.FromCertificateArn(this, $"{appName}Certificate", certificateArn);
-            IHostedZone hostedZone = HostedZone.FromLookup(this, $"{appName}HostedZone", new HostedZoneProviderProps {
-                DomainName = domainName
-            });
-
-            UserPoolDomain domain = new UserPoolDomain(this, $"{appName}UserPoolDomain", new UserPoolDomainProps {
-                UserPool = userPool,
-                CustomDomain = new CustomDomainOptions {
-                    DomainName = subdomainName,
-                    Certificate = certificate,
-                },
-            });
-
-            ARecord record = new ARecord(this, $"{appName}ARecord", new ARecordProps {
-                Zone = hostedZone,
-                RecordName = subdomainName,
-                Target = RecordTarget.FromAlias(new UserPoolDomainTarget(domain)),
             });
         }
     }
