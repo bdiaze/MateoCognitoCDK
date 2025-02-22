@@ -83,21 +83,21 @@ namespace Cdk
 
             _ = new StringParameter(this, $"{appName}StringParameterCognitoUserPoolId", new StringParameterProps {
                 ParameterName = $"/{appName}/Cognito/UserPoolId",
-                Description = $"Cognito UserPoolId de la aplicación {appName}",
+                Description = $"Cognito UserPoolId de la aplicacion {appName}",
                 StringValue = userPool.UserPoolId,
                 Tier = ParameterTier.STANDARD,
             });
 
             _ = new StringParameter(this, $"{appName}StringParameterCognitoUserPoolClientId", new StringParameterProps {
                 ParameterName = $"/{appName}/Cognito/UserPoolClientId",
-                Description = $"Cognito UserPoolClientId de la aplicación {appName}",
+                Description = $"Cognito UserPoolClientId de la aplicacion {appName}",
                 StringValue = userPoolClient.UserPoolClientId,
                 Tier = ParameterTier.STANDARD,
             });
 
             _ = new StringParameter(this, $"{appName}StringParameterCognitoRegion", new StringParameterProps {
                 ParameterName = $"/{appName}/Cognito/Region",
-                Description = $"Cognito Region de la aplicación {appName}",
+                Description = $"Cognito Region de la aplicacion {appName}",
                 StringValue = region,
                 Tier = ParameterTier.STANDARD,
             });
