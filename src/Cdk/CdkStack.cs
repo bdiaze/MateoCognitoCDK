@@ -3,6 +3,7 @@ using Amazon.CDK.AWS.CertificateManager;
 using Amazon.CDK.AWS.Cognito;
 using Amazon.CDK.AWS.Route53;
 using Amazon.CDK.AWS.Route53.Targets;
+using Amazon.CDK.AWS.SSM;
 using Constructs;
 
 namespace Cdk
@@ -12,14 +13,12 @@ namespace Cdk
         internal CdkStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
         {
             string appName = System.Environment.GetEnvironmentVariable("APP_NAME")!;
+            string region = System.Environment.GetEnvironmentVariable("REGION_AWS")!;
             string emailSubject = System.Environment.GetEnvironmentVariable("VERIFICATION_SUBJECT")!;
             string emailBody = System.Environment.GetEnvironmentVariable("VERIFICATION_BODY")!;
-            string domainName = System.Environment.GetEnvironmentVariable("DOMAIN_NAME")!;
-            string subdomainName = System.Environment.GetEnvironmentVariable("SUBDOMAIN_NAME")!;
-            string certificateArn = System.Environment.GetEnvironmentVariable("CERTIFICATE_ARN")!;
 
 
-            UserPool userPool = new UserPool(this, $"{appName}UserPool", new UserPoolProps {
+            UserPool userPool = new(this, $"{appName}UserPool", new UserPoolProps {
                 UserPoolName = $"{appName}UserPool",
                 SelfSignUpEnabled = true,
                 UserVerification = new UserVerificationConfig {
@@ -71,7 +70,7 @@ namespace Cdk
             });
 
             // Create client for login/logout page, any other permissions required should be added in another client...
-            UserPoolClient userPoolClient = new UserPoolClient(this, $"{appName}FrontendUserPoolClient", new UserPoolClientProps {
+            UserPoolClient userPoolClient = new(this, $"{appName}FrontendUserPoolClient", new UserPoolClientProps {
                 UserPoolClientName = $"{appName}FrontendUserPoolClient",
                 UserPool = userPool,
                 GenerateSecret = false,
@@ -80,6 +79,27 @@ namespace Cdk
                     UserSrp = true,
                 },
                 DisableOAuth = true,
+            });
+
+            _ = new StringParameter(this, $"{appName}StringParameterCognitoUserPoolId", new StringParameterProps {
+                ParameterName = $"/{appName}/Cognito/UserPoolId",
+                Description = $"Cognito UserPoolId de la aplicación {appName}",
+                StringValue = userPool.UserPoolId,
+                Tier = ParameterTier.STANDARD,
+            });
+
+            _ = new StringParameter(this, $"{appName}StringParameterCognitoUserPoolClientId", new StringParameterProps {
+                ParameterName = $"/{appName}/Cognito/UserPoolClientId",
+                Description = $"Cognito UserPoolClientId de la aplicación {appName}",
+                StringValue = userPoolClient.UserPoolClientId,
+                Tier = ParameterTier.STANDARD,
+            });
+
+            _ = new StringParameter(this, $"{appName}StringParameterCognitoRegion", new StringParameterProps {
+                ParameterName = $"/{appName}/Cognito/Region",
+                Description = $"Cognito Region de la aplicación {appName}",
+                StringValue = region,
+                Tier = ParameterTier.STANDARD,
             });
         }
     }

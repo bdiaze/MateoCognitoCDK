@@ -8,6 +8,7 @@ on:
 jobs:
     build:
         runs-on: ubuntu-latest
+        environment: Production
         permissions:
             contents: read
             id-token: write
@@ -20,9 +21,6 @@ jobs:
             REGION_AWS: ${{ vars.REGION_AWS }}
             VERIFICATION_BODY: ${{ vars.VERIFICATION_BODY }}
             VERIFICATION_SUBJECT: ${{ vars.VERIFICATION_SUBJECT }}
-            DOMAIN_NAME: ${{ vars.DOMAIN_NAME }}
-            SUBDOMAIN_NAME: ${{ vars.SUBDOMAIN_NAME }}
-            CERTIFICATE_ARN: ${{ vars.CERTIFICATE_ARN }}
         steps:
             - name: Checkout Repositorio
               uses: actions/checkout@v4
